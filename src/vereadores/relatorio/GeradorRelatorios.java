@@ -95,17 +95,82 @@ public class GeradorRelatorios {
     }
 
     private void imprimirRelatorio4PrejudicadosProporcional() {
-        // A implementar...
+        System.out.println(
+            "Teriam sido eleitos se a votação fosse majoritária, e não foram eleitos:"
+        );
+        System.out.println("(com sua posição no ranking de mais votados)");
+
+        for (int i = 0; i < this.numeroVagas; i++) {
+            Candidato c = this.todosCandidatosOrdenados.get(i);
+
+            if (!c.isEleito()) {
+                String asterisco = c.participaFederacao() ? "*" : "";
+                String votosFormatados =
+                    formatadorInteiros.format(c.getVotosNominais());
+                String textoVoto =
+                    c.getVotosNominais() > 1 ? "votos" : "voto";
+
+                System.out.printf(
+                    "%d - %s%s (%s, %s %s)\n",
+                    i + 1,
+                    asterisco,
+                    c.getNomeDaUrna(),
+                    c.getPartido().getSiglaPartido(),
+                    votosFormatados,
+                    textoVoto
+                );
+            }
+        }
+
+        System.out.println();
     }
 
     private void imprimirRelatorio5BeneficiadosProporcional() {
-        // A implementar...
+        System.out.println("Eleitos, que se beneficiaram do sistema proporcional:");
+        System.out.println("(com sua posição no ranking de mais votados)");
+
+        for (int i = this.numeroVagas;
+            i < this.todosCandidatosOrdenados.size();
+            i++) {
+
+            Candidato c = this.todosCandidatosOrdenados.get(i);
+
+            if (c.isEleito()) {
+                String asterisco = c.participaFederacao() ? "*" : "";
+                String votosFormatados =
+                    formatadorInteiros.format(c.getVotosNominais());
+                String textoVoto =
+                    c.getVotosNominais() > 1 ? "votos" : "voto";
+
+                System.out.printf(
+                    "%d - %s%s (%s, %s %s)\n",
+                    i + 1,
+                    asterisco,
+                    c.getNomeDaUrna(),
+                    c.getPartido().getSiglaPartido(),
+                    votosFormatados,
+                    textoVoto
+                );
+            }
+        }
+
+        System.out.println();
     }
 
     private void imprimirRelatorio6VotacaoPartidos() {
-        // A implementar...
-    }
+        System.out.println("Votação dos partidos e número de candidatos eleitos:");
 
+        List<Partido> partidos = new ArrayList<>(
+            this.eleicao.getPartidos().values()
+        );
+
+        Collections.sort(partidos);
+
+        // Aqui acrescentaremos a impressão de cada partido.
+
+        System.out.println();
+    }
+    
     private void imprimirRelatorio7PrimeiroUltimoPartido() {
         // A implementar...
     }
