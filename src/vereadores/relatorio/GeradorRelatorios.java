@@ -9,6 +9,7 @@ import java.util.Locale;
 import vereadores.sistemaEleitoral.Candidato;
 import vereadores.sistemaEleitoral.Eleicao;
 import vereadores.sistemaEleitoral.Partido;
+import vereadores.sistemaEleitoral.ComparadorPartidoPorMaisVotado;
 
 public class GeradorRelatorios {
     private Eleicao eleicao;
@@ -166,13 +167,53 @@ public class GeradorRelatorios {
 
         Collections.sort(partidos);
 
-        // Aqui acrescentaremos a impressão de cada partido.
+        for (int i = 0; i < partidos.size(); i++) {
+        Partido p = partidos.get(i);
+
+        int total = p.getTotalVotos();
+        int nominais = p.getVotosNominais();
+        int eleitos = p.getQtdCandidatosEleitos();
+
+        String textoVoto = total > 1 ? "votos" : "voto";
+        String textoNominal = nominais > 1 ? "nominais" : "nominal";
+        String textoEleitos = eleitos > 1
+            ? "candidatos eleitos"
+            : "candidato eleito";
+
+        System.out.printf(
+            "%d - %s - %d, %s %s (%s %s e %s de legenda), %d %s\n",
+            i + 1,
+            p.getSiglaPartido(),
+            p.getnumeroPartido(),
+            formatadorInteiros.format(total),
+            textoVoto,
+            formatadorInteiros.format(nominais),
+            textoNominal,
+            formatadorInteiros.format(p.getVotosDeLegenda()),
+            eleitos,
+            textoEleitos
+            );
+        }
 
         System.out.println();
     }
     
     private void imprimirRelatorio7PrimeiroUltimoPartido() {
-        // A implementar...
+        System.out.println("Primeiro e último colocados de cada partido:");
+
+        List<Partido> partidos = new ArrayList<>();
+
+        for (Partido p : this.eleicao.getPartidos().values()) {
+            if (p.possuiCandidatosComVotosPositivos()) {
+                partidos.add(p);
+            }
+        }
+
+        Collections.sort(partidos, new ComparadorPartidoPorMaisVotado());
+
+        // Acrescentaremos a impressão dos candidatos aqui.
+
+        System.out.println();
     }
 
     private void imprimirRelatorio8FaixaEtaria() {
