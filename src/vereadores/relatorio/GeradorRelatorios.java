@@ -217,7 +217,55 @@ public class GeradorRelatorios {
     }
 
     private void imprimirRelatorio8FaixaEtaria() {
-        // A implementar...
+        System.out.println(
+            "Eleitos, por faixa etária (na data da eleição):"
+        );
+
+        int[] quantidades = new int[5];
+
+        for (Candidato c : this.todosCandidatosOrdenados) {
+            if (c.isEleito()) {
+                int idade = c.calculaIdade(
+                    this.eleicao.getDataEleicao()
+                );
+
+                if (idade < 30) {
+                    quantidades[0]++;
+                } else if (idade < 40) {
+                    quantidades[1]++;
+                } else if (idade < 50) {
+                    quantidades[2]++;
+                } else if (idade < 60) {
+                    quantidades[3]++;
+                } else {
+                    quantidades[4]++;
+                }
+            }
+        }
+
+        String[] rotulos = {
+            "      Idade < 30:",
+            "30 <= Idade < 40:",
+            "40 <= Idade < 50:",
+            "50 <= Idade < 60:",
+            "60 <= Idade     :"
+        };
+
+        for (int i = 0; i < quantidades.length; i++) {
+            double percentual = this.numeroVagas > 0
+                ? quantidades[i] * 100.0 / this.numeroVagas
+                : 0.0;
+
+            System.out.printf(
+                Locale.forLanguageTag("pt-BR"),
+                "%s %d (%.2f%%)\n",
+                rotulos[i],
+                quantidades[i],
+                percentual
+            );
+        }
+
+        System.out.println();
     }
 
     private void imprimirRelatorio9Genero() {
