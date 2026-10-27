@@ -336,6 +336,43 @@ public class GeradorRelatorios {
     }
 
     private void imprimirRelatorio10TotalVotos() {
-        // A implementar...
+        int totalNominais = 0;
+        int totalLegenda = 0;
+
+        for (Partido p : this.eleicao.getPartidos().values()) {
+            totalNominais += p.getVotosNominais();
+            totalLegenda += p.getVotosDeLegenda();
+        }
+
+        int totalValidos = totalNominais + totalLegenda;
+
+        double percentualNominais = totalValidos > 0
+            ? totalNominais * 100.0 / totalValidos
+            : 0.0;
+
+        double percentualLegenda = totalValidos > 0
+            ? totalLegenda * 100.0 / totalValidos
+            : 0.0;
+
+        System.out.printf(
+            "Total de votos válidos:    %s\n",
+            formatadorInteiros.format(totalValidos)
+        );
+
+        System.out.printf(
+            Locale.forLanguageTag("pt-BR"),
+            "Total de votos nominais:   %s (%.2f%%)\n",
+            formatadorInteiros.format(totalNominais),
+            percentualNominais
+        );
+
+        System.out.printf(
+            Locale.forLanguageTag("pt-BR"),
+            "Total de votos de legenda: %s (%.2f%%)\n",
+            formatadorInteiros.format(totalLegenda),
+            percentualLegenda
+        );
+
+        System.out.println();
     }
 }
