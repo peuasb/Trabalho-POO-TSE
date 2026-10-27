@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import vereadores.sistemaEleitoral.Candidato;
 import vereadores.sistemaEleitoral.Eleicao;
+import vereadores.sistemaEleitoral.Genero;
 import vereadores.sistemaEleitoral.Partido;
 import vereadores.sistemaEleitoral.ComparadorPartidoPorMaisVotado;
 
@@ -211,8 +212,33 @@ public class GeradorRelatorios {
 
         Collections.sort(partidos, new ComparadorPartidoPorMaisVotado());
 
-        // Acrescentaremos a impressão dos candidatos aqui.
+        for (int i = 0; i < partidos.size(); i++) {
+        Partido p = partidos.get(i);
 
+        Candidato primeiro = p.getCandidatoMaisVotado();
+        Candidato ultimo = p.getCandidatoMenosVotado();
+
+        String textoPrimeiro = primeiro.getVotosNominais() > 1
+            ? "votos" : "voto";
+
+        String textoUltimo = ultimo.getVotosNominais() > 1
+            ? "votos" : "voto";
+
+        System.out.printf(
+            "%d - %s - %d, %s (%d, %s %s) / %s (%d, %s %s)\n",
+            i + 1,
+            p.getSiglaPartido(),
+            p.getnumeroPartido(),
+            primeiro.getNomeDaUrna(),
+            primeiro.getNumeroCandidato(),
+            formatadorInteiros.format(primeiro.getVotosNominais()),
+            textoPrimeiro,
+            ultimo.getNomeDaUrna(),
+            ultimo.getNumeroCandidato(),
+            formatadorInteiros.format(ultimo.getVotosNominais()),
+            textoUltimo
+        );
+    }
         System.out.println();
     }
 
@@ -269,7 +295,44 @@ public class GeradorRelatorios {
     }
 
     private void imprimirRelatorio9Genero() {
-        // A implementar...
+        System.out.println("Eleitos, por gênero:");
+
+        int feminino = 0;
+        int masculino = 0;
+
+        for (Candidato c : this.todosCandidatosOrdenados) {
+            if (c.isEleito()) {
+                if (c.getGenero() == Genero.FEMININO) {
+                    feminino++;
+                } else if (c.getGenero() == Genero.MASCULINO) {
+                    masculino++;
+                }
+            }
+        }
+
+        double percentualFeminino = this.numeroVagas > 0
+            ? feminino * 100.0 / this.numeroVagas
+            : 0.0;
+
+        double percentualMasculino = this.numeroVagas > 0
+            ? masculino * 100.0 / this.numeroVagas
+            : 0.0;
+
+        System.out.printf(
+            Locale.forLanguageTag("pt-BR"),
+            "Feminino: %d (%.2f%%)\n",
+            feminino,
+            percentualFeminino
+        );
+
+        System.out.printf(
+            Locale.forLanguageTag("pt-BR"),
+            "Masculino: %d (%.2f%%)\n",
+            masculino,
+            percentualMasculino
+        );
+
+        System.out.println();
     }
 
     private void imprimirRelatorio10TotalVotos() {
