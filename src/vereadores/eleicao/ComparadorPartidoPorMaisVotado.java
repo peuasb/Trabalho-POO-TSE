@@ -1,4 +1,4 @@
-package vereadores.sistemaEleitoral;
+package vereadores.eleicao;
 
 import java.util.Comparator;
 
@@ -16,6 +16,6 @@ public class ComparadorPartidoPorMaisVotado implements Comparator<Partido> {
             return comparacaoVotos;
         }
 
-        return Integer.compare(p1.getnumeroPartido(), p2.getnumeroPartido());
+        return Integer.compare(p1.getNumeroPartido(), p2.getNumeroPartido());
     }
 }

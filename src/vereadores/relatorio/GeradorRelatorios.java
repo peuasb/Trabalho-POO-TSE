@@ -6,11 +6,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import vereadores.sistemaEleitoral.Candidato;
-import vereadores.sistemaEleitoral.Eleicao;
-import vereadores.sistemaEleitoral.Genero;
-import vereadores.sistemaEleitoral.Partido;
-import vereadores.sistemaEleitoral.ComparadorPartidoPorMaisVotado;
+import vereadores.eleicao.Candidato;
+import vereadores.eleicao.ComparadorPartidoPorMaisVotado;
+import vereadores.eleicao.Eleicao;
+import vereadores.eleicao.Genero;
+import vereadores.eleicao.Partido;
 
 public class GeradorRelatorios {
     private Eleicao eleicao;
@@ -63,7 +63,7 @@ public class GeradorRelatorios {
                 System.out.printf("%d - %s%s (%s, %s %s)\n", 
                     posicao, 
                     asterisco, 
-                    c.getNomeDaUrna(), 
+                    c.getNomeUrna(), 
                     c.getPartido().getSiglaPartido(), 
                     votosFormatados, 
                     textoVoto
@@ -87,7 +87,7 @@ public class GeradorRelatorios {
             System.out.printf("%d - %s%s (%s, %s %s)\n", 
                 (i + 1),
                 asterisco, 
-                c.getNomeDaUrna(), 
+                c.getNomeUrna(), 
                 c.getPartido().getSiglaPartido(), 
                 votosFormatados, 
                 textoVoto
@@ -97,9 +97,7 @@ public class GeradorRelatorios {
     }
 
     private void imprimirRelatorio4PrejudicadosProporcional() {
-        System.out.println(
-            "Teriam sido eleitos se a votação fosse majoritária, e não foram eleitos:"
-        );
+        System.out.println("Teriam sido eleitos se a votação fosse majoritária, e não foram eleitos:");
         System.out.println("(com sua posição no ranking de mais votados)");
 
         for (int i = 0; i < this.numeroVagas; i++) {
@@ -116,7 +114,7 @@ public class GeradorRelatorios {
                     "%d - %s%s (%s, %s %s)\n",
                     i + 1,
                     asterisco,
-                    c.getNomeDaUrna(),
+                    c.getNomeUrna(),
                     c.getPartido().getSiglaPartido(),
                     votosFormatados,
                     textoVoto
@@ -148,7 +146,7 @@ public class GeradorRelatorios {
                     "%d - %s%s (%s, %s %s)\n",
                     i + 1,
                     asterisco,
-                    c.getNomeDaUrna(),
+                    c.getNomeUrna(),
                     c.getPartido().getSiglaPartido(),
                     votosFormatados,
                     textoVoto
@@ -185,7 +183,7 @@ public class GeradorRelatorios {
             "%d - %s - %d, %s %s (%s %s e %s de legenda), %d %s\n",
             i + 1,
             p.getSiglaPartido(),
-            p.getnumeroPartido(),
+            p.getNumeroPartido(),
             formatadorInteiros.format(total),
             textoVoto,
             formatadorInteiros.format(nominais),
@@ -228,12 +226,12 @@ public class GeradorRelatorios {
             "%d - %s - %d, %s (%d, %s %s) / %s (%d, %s %s)\n",
             i + 1,
             p.getSiglaPartido(),
-            p.getnumeroPartido(),
-            primeiro.getNomeDaUrna(),
+            p.getNumeroPartido(),
+            primeiro.getNomeUrna(),
             primeiro.getNumeroCandidato(),
             formatadorInteiros.format(primeiro.getVotosNominais()),
             textoPrimeiro,
-            ultimo.getNomeDaUrna(),
+            ultimo.getNomeUrna(),
             ultimo.getNumeroCandidato(),
             formatadorInteiros.format(ultimo.getVotosNominais()),
             textoUltimo

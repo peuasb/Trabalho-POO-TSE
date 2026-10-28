@@ -1,4 +1,4 @@
-package vereadores.sistemaEleitoral;
+package vereadores.eleicao;
 
 public enum Genero {
     MASCULINO(2, "Masculino"),

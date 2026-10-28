@@ -1,19 +1,20 @@
 package vereadores;
 
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import vereadores.eleicao.Eleicao;
 import vereadores.leitura.LeitorDadosEleitorais;
 import vereadores.relatorio.GeradorRelatorios;
-import vereadores.sistemaEleitoral.Eleicao;
 
 public class App {
     public static void main(String[] args) {
-        // 1. Validação dos argumentos da linha de comandos
+        // Validação dos argumentos da linha de comandos
         if (args.length < 4) {
             System.out.println("Erro: Faltam argumentos!");
-            System.out.println("Uso: java -jar vereadores.jar <codigo_municipio> <arquivo_candidatos> <arquivo_votacao> <data_eleicao>");
             return;
         }
 
@@ -22,7 +23,7 @@ public class App {
         String caminhoVotacao = args[2];
         String dataString = args[3];
 
-        // 2. Conversão da data
+        // Conversão da data
         LocalDate dataEleicao;
         try {
             DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -32,10 +33,10 @@ public class App {
             return;
         }
 
-        // 3. Inicialização da Eleição
+        // Inicialização da Eleição
         Eleicao eleicao = new Eleicao(codigoMunicipio, dataEleicao);
 
-        // 4. Leitura dos ficheiros CSV
+        // Leitura dos ficheiros CSV
         try {
             LeitorDadosEleitorais.lerCandidatos(caminhoCandidatos, eleicao);
             LeitorDadosEleitorais.lerVotacao(caminhoVotacao, eleicao);
@@ -45,7 +46,7 @@ public class App {
             return;
         }
 
-        // 5. Geração dos Relatórios
+        // Geração dos Relatórios
         GeradorRelatorios gerador = new GeradorRelatorios(eleicao);
         gerador.gerarTodosRelatorios();
     }

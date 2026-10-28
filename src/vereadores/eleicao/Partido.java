@@ -1,4 +1,4 @@
-package vereadores.sistemaEleitoral;
+package vereadores.eleicao;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class Partido implements Comparable<Partido> {
             return comparacaoVotos;
         }
         
-        return Integer.compare(this.numeroPartido, outro.getnumeroPartido());
+        return Integer.compare(this.numeroPartido, outro.getNumeroPartido());
     }
 
     public int getVotosNominais() {
@@ -47,7 +47,7 @@ public class Partido implements Comparable<Partido> {
         return this.getVotosNominais() + this.votosDeLegenda;
     }
 
-    public int getnumeroPartido() {
+    public int getNumeroPartido() {
         return numeroPartido;
     }
     

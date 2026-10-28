@@ -1,4 +1,4 @@
-package vereadores.sistemaEleitoral;
+package vereadores.eleicao;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -44,18 +44,18 @@ public class Candidato implements Comparable<Candidato> {
             return comparacaoVotos;
         } 
         
-        return this.dataNascimento.compareTo(outro.getDataDeNascimento());
+        return this.dataNascimento.compareTo(outro.getDataNascimento());
     }
 
     public int getNumeroCandidato() {
         return numeroCandidato;
     }
         
-    public String getNomeDaUrna() {
+    public String getNomeUrna() {
         return nomeUrna;
     }
         
-    public int getNumeroDaFederacao() {
+    public int getNumeroFederacao() {
         return numeroFederacao;
     }
         
@@ -63,7 +63,7 @@ public class Candidato implements Comparable<Candidato> {
         return isEleito;
     }
         
-    public LocalDate getDataDeNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
         

@@ -11,10 +11,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-import vereadores.sistemaEleitoral.Eleicao;
-import vereadores.sistemaEleitoral.Genero;
-import vereadores.sistemaEleitoral.Candidato;
-import vereadores.sistemaEleitoral.Partido;
+import vereadores.eleicao.Candidato;
+import vereadores.eleicao.Eleicao;
+import vereadores.eleicao.Genero;
+import vereadores.eleicao.Partido;
 
 public abstract class LeitorDadosEleitorais {
     public static void lerCandidatos(String caminhoArquivo, Eleicao eleicao) throws IOException {
@@ -43,34 +43,34 @@ public abstract class LeitorDadosEleitorais {
             while ((linha = br.readLine()) != null) {
                 linha = linha.replace("\"", "");
                 String[] valores = linha.split(";");
-                                
-                int codigoCargo = Integer.parseInt(valores[cabecalho.get("CD_CARGO")]);
-                int situacaoTurno = Integer.parseInt(valores[cabecalho.get("CD_SIT_TOT_TURNO")]);
                 
-                if (codigoCargo != 13 || situacaoTurno == 1) {
-                    continue;
-                }
-                
+                // 1. SEMPRE cadastra o partido primeiro (independente de cargo, município ou situação)
                 int numeroPartido = Integer.parseInt(valores[cabecalho.get("NR_PARTIDO")]);
                 String siglaPartido = valores[cabecalho.get("SG_PARTIDO")];
-                
                 Partido partido = eleicao.obterOuCriarPartido(numeroPartido, siglaPartido);
                 
+                // 2. Filtra apenas cargo 13 (Vereador), situação != -1 (válido) e município correto
+                int codigoCargo = Integer.parseInt(valores[cabecalho.get("CD_CARGO")]);
+                int situacaoTurno = Integer.parseInt(valores[cabecalho.get("CD_SIT_TOT_TURNO")]);
                 String codigoMunicipio = valores[cabecalho.get("SG_UE")];
                 
-                if (!codigoMunicipio.equals(eleicao.getCodigoMunicipio())) {
+                if (codigoCargo != 13 
+                        || situacaoTurno == -1 
+                        || Integer.parseInt(codigoMunicipio) != Integer.parseInt(eleicao.getCodigoMunicipio())) {
                     continue;
                 }
                 
+                // 3. Instancia e cadastra o candidato válido do município
                 int numeroCandidato = Integer.parseInt(valores[cabecalho.get("NR_CANDIDATO")]);
                 String nomeUrna = valores[cabecalho.get("NM_URNA_CANDIDATO")];
-                
                 int numeroFederacao = Integer.parseInt(valores[cabecalho.get("NR_FEDERACAO")]);
                 Genero genero = Genero.fromCodigo(Integer.parseInt(valores[cabecalho.get("CD_GENERO")]));
                 LocalDate dataNascimento = LocalDate.parse(valores[cabecalho.get("DT_NASCIMENTO")], formatadorData);
                 boolean isEleito = (situacaoTurno == 2 || situacaoTurno == 3);
 
-                Candidato candidato = new Candidato(numeroCandidato, nomeUrna, numeroFederacao, isEleito, dataNascimento, genero, partido);
+                Candidato candidato = new Candidato(
+                    numeroCandidato, nomeUrna, numeroFederacao, isEleito, dataNascimento, genero, partido
+                );
                 eleicao.cadastrarCandidato(candidato);
             }
         }

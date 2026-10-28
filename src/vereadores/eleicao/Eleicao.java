@@ -1,4 +1,4 @@
-package vereadores.sistemaEleitoral;
+package vereadores.eleicao;
 
 import java.time.LocalDate;
 import java.util.Map;
